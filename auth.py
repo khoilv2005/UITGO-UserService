@@ -9,12 +9,18 @@ from dotenv import load_dotenv
 load_dotenv()
 
 SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = os.getenv("ALGORITHM", "HS256")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
+ALGORITHM = os.getenv("ALGORITHM")
+ACCESS_TOKEN_EXPIRE_MINUTES_STR = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
 
-# Validate that SECRET_KEY is set
+# Validate that required environment variables are set
 if not SECRET_KEY:
     raise ValueError("SECRET_KEY environment variable is not set")
+if not ALGORITHM:
+    raise ValueError("ALGORITHM environment variable is not set")
+if not ACCESS_TOKEN_EXPIRE_MINUTES_STR:
+    raise ValueError("ACCESS_TOKEN_EXPIRE_MINUTES environment variable is not set")
+
+ACCESS_TOKEN_EXPIRE_MINUTES = int(ACCESS_TOKEN_EXPIRE_MINUTES_STR)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
